@@ -3,8 +3,11 @@
 **Kelompok:** Kelompok 9
 
 | Nama | NIM | Kontribusi |
+
 | Naufal Fudhail | 103072400013 | Pitfall 1 (The network is reliable) & Analisis |
+
 | Diandra Nanditya Mulkis | 103072400075 | Pitfall 2 (Latency is zero) & Analisis |
+
 | Samuel Nelson Wabiser | 103072400111 | Pitfall 3 (Monolithic) & Kesimpulan |
 
 ## Pitfall 1: Fallacy "The network is reliable" — ditulis oleh Naufal Fudhail
