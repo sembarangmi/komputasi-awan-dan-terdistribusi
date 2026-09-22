@@ -38,7 +38,9 @@ Setelah tugas ini, kelompok harus mampu:
 4. Review silang: tiap anggota membaca dan mengomentari analisis rekan sebelum submit (catat di `JURNAL.md`).
 
 ## Struktur Submission
-
+1
+2
+3
 ```
 tugas-01-identifikasi-masalah-pitfall/
 ├── README.md      # Isi dengan template ANALISIS-TEMPLATE.md di bawah
