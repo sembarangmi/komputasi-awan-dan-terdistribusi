@@ -1,12 +1,11 @@
 # Tugas 1 — Analisis Pitfall FoodGo
 
-**Kelompok:** [Isi Nama Kelompok Kalian]
+**Kelompok:** Kelompok 9
 
 | Nama | NIM | Kontribusi |
-|---|---|---|
 | Naufal Fudhail | 103072400013 | Pitfall 1 (The network is reliable) & Analisis |
-| [Nama Teman 2] | [NIM Teman 2] | Pitfall 2 (Latency is zero) & Analisis |
-| [Nama Teman 3] | [NIM Teman 3] | Pitfall 3 (Monolithic) & Kesimpulan |
+| Diandra Nanditya Mulkis | 103072400075 | Pitfall 2 (Latency is zero) & Analisis |
+| Samuel Nelson Wabiser | 103072400111 | Pitfall 3 (Monolithic) & Kesimpulan |
 
 ## Pitfall 1: Fallacy "The network is reliable" — ditulis oleh Naufal Fudhail
 
@@ -52,4 +51,6 @@
 
 ## Kesimpulan Kelompok
 
-[Diskusikan ringkasan akhirnya dengan kelompokmu dan tulis di sini]
+Jika FoodGo memperbaiki ketiga pitfall di atas, arsitektur yang disarankan secara garis besar adalah bertransisi dari sistem **Monolitik** menuju **Microservices** atau *Service-Oriented Architecture* (SOA). Dengan pemisahan ini, modul pesanan, pembayaran, dan notifikasi berjalan sebagai layanan independen. Isolasi ini memastikan bahwa lonjakan beban atau *crash* pada satu modul tidak akan melumpuhkan keseluruhan aplikasi.
+
+Namun, karena arsitektur terdistribusi sangat bergantung pada komunikasi jaringan, sistem ini wajib mengadopsi prinsip *Design for Failure*. Setiap pemanggilan antar-*service* harus dilengkapi dengan jaring pengaman jaringan seperti **Timeout** yang tegas, **Retry dengan Exponential Backoff**, dan **Circuit Breaker**. Kombinasi antara arsitektur layanan yang terisolasi dan mekanisme toleransi kesalahan ini akan menjadi fondasi utama bagi FoodGo untuk masuk ke tahap perancangan arsitektur *cloud-native* yang sesungguhnya di Tugas 2.
