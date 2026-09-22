@@ -39,6 +39,7 @@ Setelah tugas ini, kelompok harus mampu:
 
 ## Struktur Submission
 1
+2
 ```
 tugas-01-identifikasi-masalah-pitfall/
 ├── README.md      # Isi dengan template ANALISIS-TEMPLATE.md di bawah
