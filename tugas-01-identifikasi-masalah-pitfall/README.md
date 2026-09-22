@@ -1,65 +1,55 @@
-# Tugas 1 (Pekan 1) — Identifikasi Masalah & Pitfall Sistem Terdistribusi
+# Tugas 1 — Analisis Pitfall FoodGo
 
-**Materi terkait:** Definisi sistem terdistribusi, tujuan desain (transparansi, skalabilitas, keterbukaan), *Fallacies of Distributed Computing* (pitfall klasik).
+**Kelompok:** [Isi Nama Kelompok Kalian]
 
-## Studi Kasus: FoodGo
-
-Startup **FoodGo** (aplikasi pesan-antar makanan) mengalami kegagalan sistem saat pesanan melonjak (misalnya jam makan siang atau saat promo besar). Gejala yang dilaporkan tim engineering FoodGo:
-
-- Aplikasi jadi sangat lambat, beberapa permintaan *timeout*.
-- Server backend kadang *crash* total dan perlu di-restart manual.
-- Tim menemukan bahwa kode mereka menulis asumsi seperti `# network is always reliable, no need for retry` dan tidak ada *timeout* sama sekali pada pemanggilan antar service (modul pesanan memanggil modul pembayaran dan menunggu tanpa batas waktu).
-- Saat trafik naik, satu server yang menangani semua modul (pesanan, pembayaran, notifikasi kurir) kewalahan karena semuanya berjalan di satu proses monolitik yang sama.
-
-Ini merupakan gejala klasik dari **kesalahan asumsi tentang jaringan dan skala** yang terkenal di literatur sebagai *Fallacies of Distributed Computing* (Peter Deutsch et al.), ditambah masalah desain terkait skalabilitas.
-
-## Tujuan Pembelajaran
-
-Setelah tugas ini, kelompok harus mampu:
-1. Mengidentifikasi asumsi keliru spesifik (bukan generik) yang menyebabkan kegagalan sistem terdistribusi.
-2. Mengaitkan tiap pitfall dengan **gejala konkret** di skenario (bukan sekadar mengutip definisi buku).
-3. Mengusulkan solusi desain awal yang realistis, dengan trade-off yang disadari (bukan solusi "pasang cloud lebih besar" tanpa analisis).
-
-## Tugas Kelompok
-
-1. **Identifikasi minimal 3 pitfall utama** yang dialami FoodGo dari daftar *Fallacies of Distributed Computing* (referensi: "the network is reliable", "latency is zero", "bandwidth is infinite", "the network is secure", "topology doesn't change", "there is one administrator", "transport cost is zero", "the network is homogeneous") **DAN/ATAU** masalah desain sistem terdistribusi lain yang relevan (mis. *single point of failure* karena arsitektur monolitik).
-2. Untuk **tiap pitfall**, tulis:
-   - Kutipan/paraphrase bagian skenario yang menunjukkan pitfall ini terjadi.
-   - Penjelasan **kenapa** asumsi ini keliru dalam sistem terdistribusi nyata.
-   - Dampak konkret ke FoodGo (mis. "karena tidak ada timeout, satu service pembayaran yang lambat membuat seluruh thread modul pesanan tertahan, akhirnya server kehabisan resource").
-3. Usulkan **solusi desain awal** (tingkat konsep, bukan kode) untuk tiap pitfall — misalnya: timeout + retry dengan backoff untuk asumsi jaringan reliabel, circuit breaker, pemisahan modul jadi service terpisah, dsb.
-4. Diskusikan **satu trade-off** dari solusi yang diusulkan (solusi tidak gratis — misalnya retry bisa memperparah beban saat *cascading failure*).
-
-## Langkah Kerja yang Disarankan
-
-1. Kelompok diskusi tatap muka/panggilan (bukan hanya chat teks) untuk membedah skenario bersama — dokumentasikan poin diskusi di `JURNAL.md`.
-2. Tiap anggota mengambil 1 pitfall sebagai tanggung jawab utama (tulis analisisnya sendiri di `README.md`, dengan nama di bagian yang ditulis).
-3. Gabungkan hasil, diskusikan solusi desain bersama sebagai kelompok.
-4. Review silang: tiap anggota membaca dan mengomentari analisis rekan sebelum submit (catat di `JURNAL.md`).
-
-## Struktur Submission
-
-```
-tugas-01-identifikasi-masalah-pitfall/
-├── README.md      # Isi dengan template ANALISIS-TEMPLATE.md di bawah
-├── JURNAL.md       # Log diskusi & proses berpikir kelompok
-└── bukti/          # (opsional untuk tugas ini) screenshot diskusi/whiteboard
-```
-
-Gunakan [`ANALISIS-TEMPLATE.md`](ANALISIS-TEMPLATE.md) sebagai kerangka — salin isinya ke `README.md` kelompok kalian lalu isi bagian `[...]`.
-
-## Rubrik Penilaian (Tugas 1)
-
-| Komponen | Bobot | Kriteria |
+| Nama | NIM | Kontribusi |
 |---|---|---|
-| Ketepatan identifikasi pitfall | 25% | Pitfall yang dipilih benar-benar tercermin di skenario, bukan asal tempel definisi |
-| Kedalaman analisis dampak | 30% | Menjelaskan mekanisme kegagalan (kenapa & bagaimana), bukan cuma "ini menyebabkan lambat" |
-| Kualitas solusi & trade-off | 25% | Solusi realistis untuk tim kecil (bukan solusi enterprise berlebihan), trade-off disadari |
-| Proses & kontribusi kelompok | 20% | `JURNAL.md` menunjukkan diskusi asli, tiap anggota terlihat kontribusinya |
+| Naufal Fudhail | 103072400013 | Pitfall 1 (The network is reliable) & Analisis |
+| [Nama Teman 2] | [NIM Teman 2] | Pitfall 2 (Latency is zero) & Analisis |
+| [Nama Teman 3] | [NIM Teman 3] | Pitfall 3 (Monolithic) & Kesimpulan |
 
-## Batasan Penggunaan AI (Level 2)
+## Pitfall 1: Fallacy "The network is reliable" — ditulis oleh Naufal Fudhail
 
-Tugas ini memakai kebijakan **Level 2 (AI Assisted Idea Generation & Structuring)** — lihat [`../RUBRIK-UMUM.md`](../RUBRIK-UMUM.md) untuk aturan lengkap. Boleh memakai AI untuk brainstorming pitfall apa saja yang mungkin relevan atau menyusun outline analisis; **tidak boleh** meminta AI menuliskan analisis akhirnya (kaitan ke skenario, penjelasan dampak, usulan solusi) yang tinggal ditempel ke `README.md`. Catat setiap sesi pemakaian AI di bagian "Log Penggunaan AI" pada `JURNAL.md`.
+**Bukti di skenario:** Terdapat komentar pada kode yang berasumsi bahwa `# network is always reliable, no need for retry`.
 
-Karena tugas ini murni analisis (rawan sekadar salin-tempel dari AI), verifikasi tambahan yang berlaku:
-- Setiap pitfall harus dikaitkan dengan **kalimat spesifik** dari skenario di atas — jawaban generik yang bisa dipakai untuk skenario apa saja akan dinilai rendah pada komponen kedalaman analisis.
+**Kenapa ini keliru:** Dalam sistem terdistribusi nyata, jaringan tidak pernah 100% stabil. Sering terjadi latensi, *packet loss*, atau gangguan *router* terutama saat trafik sedang tinggi (seperti jam makan siang).
+
+**Dampak ke FoodGo:** Karena tidak ada mekanisme coba ulang (*retry*), saat pesan dari aplikasi ke server gagal terkirim di tengah jalan, pesanan pelanggan akan *error* atau hilang. Pengguna hanya melihat layar *loading* yang berujung kegagalan.
+
+**Solusi desain awal:** Menerapkan mekanisme **Retry dengan Exponential Backoff**. Jika permintaan gagal, sistem akan mencoba mengirim ulang dengan jeda waktu yang terus bertambah (misal 1 detik, lalu 2 detik, lalu 4 detik) sebelum akhirnya menyerah.
+
+**Trade-off:** Risiko *cascading failure*. Jika banyak aplikasi klien melakukan *retry* secara bersamaan saat server sedang kewalahan (beban puncak), *retry* ini justru bertindak seperti serangan DDoS internal yang bisa membuat server *crash* total.
+
+---
+
+## Pitfall 2: Asumsi "Latency is zero" — ditulis oleh [Nama Teman 2]
+
+**Bukti di skenario:** Modul pesanan memanggil modul pembayaran dan menunggu tanpa batas waktu karena tidak ada *timeout* sama sekali pada pemanggilan antar *service*.
+
+**Kenapa ini keliru:** Komunikasi antar-layanan melalui jaringan selalu memakan waktu. Mengasumsikan respons instan mengabaikan fakta bahwa layanan yang dipanggil (pembayaran) bisa melambat karena antrean *request* atau masalah koneksi.
+
+**Dampak ke FoodGo:** Karena menunggu tanpa batas, antrean proses (*thread*) di server menumpuk saat modul pembayaran merespons lambat. Hal ini menguras *resource* server (CPU/RAM) hingga aplikasi melambat drastis dan menyebabkan *timeout* di sisi pengguna.
+
+**Solusi desain awal:** Menerapkan **Timeout** pada setiap panggilan antar layanan. Jika layanan gagal merespons dalam batas waktu tertentu, sistem langsung membatalkan proses atau mengembalikan status gagal. Bisa juga dikombinasikan dengan pola **Circuit Breaker**.
+
+**Trade-off:** Menentukan batas waktu *timeout* bisa jadi sulit. Jika *timeout* terlalu singkat, sistem bisa saja membatalkan transaksi yang sebenarnya berhasil diproses di modul pembayaran sehingga terjadi inkonsistensi data.
+
+---
+
+## Pitfall 3: Single Point of Failure (Arsitektur Monolitik) — ditulis oleh [Nama Teman 3]
+
+**Bukti di skenario:** Satu server menangani semua modul (pesanan, pembayaran, notifikasi kurir) dalam satu proses monolitik, yang membuatnya kewalahan saat trafik naik.
+
+**Kenapa ini keliru:** Menggabungkan semua layanan dalam satu proses menghilangkan isolasi kegagalan. Kinerja dan ketahanan seluruh sistem menjadi bergantung penuh pada komponen yang paling rentan terhadap beban tinggi.
+
+**Dampak ke FoodGo:** Lonjakan beban pada satu fitur (misal modul pembayaran) menghabiskan seluruh kapasitas CPU/RAM server. Akibatnya, modul lain yang tidak terkait langsung (seperti pencarian atau notifikasi kurir) ikut mati total (*crash*), melumpuhkan seluruh aplikasi.
+
+**Solusi desain awal:** Melakukan pemisahan *service* secara bertahap (migrasi ke *Service-Oriented Architecture* atau *Microservices*). Modul pesanan, pembayaran, dan kurir dipisah ke layanan dan infrastruktur mandiri agar dapat di-*scale up* secara terpisah sesuai kebutuhan.
+
+**Trade-off:** Kompleksitas sistem dan infrastruktur akan meningkat drastis. Tim *engineering* harus mengelola alur *deployment* yang lebih rumit, memonitor jaringan antar *service*, dan mengurus sinkronisasi *database* terdistribusi.
+
+---
+
+## Kesimpulan Kelompok
+
+[Diskusikan ringkasan akhirnya dengan kelompokmu dan tulis di sini]
