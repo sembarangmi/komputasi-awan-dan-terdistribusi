@@ -19,4 +19,4 @@
 
 | Tanggal | Tool AI | Prompt yang diberikan | Ringkasan saran/ide AI | Bagaimana diolah jadi tulisan/kode sendiri |
 |---|---|---|---|---|
-| ... | ... | ... | ... | ... |
+| 22 September 2026 | Gemini | Minta bantuan brainstorming 3 pitfall dan struktur jawaban untuk skenario FoodGo. | AI memberikan analisis untuk fallacy "network is reliable", "latency is zero", dan "single point of failure", beserta saran solusi (exponential backoff, circuit breaker, microservices) dan trade-off-nya. | Tim menyusun ulang argumen AI dengan gaya bahasa sendiri, menghubungkan penjelasan secara spesifik dengan studi kasus di rubrik, dan membagi tugas penulisan ke tiap anggota. |
