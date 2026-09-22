@@ -22,7 +22,7 @@
 
 ---
 
-## Pitfall 2: Asumsi "Latency is zero" — ditulis oleh [Nama Teman 2]
+## Pitfall 2: Asumsi "Latency is zero" — ditulis oleh Diandra Nanditya Mulkis
 
 **Bukti di skenario:** Modul pesanan memanggil modul pembayaran dan menunggu tanpa batas waktu karena tidak ada *timeout* sama sekali pada pemanggilan antar *service*.
 
@@ -36,7 +36,7 @@
 
 ---
 
-## Pitfall 3: Single Point of Failure (Arsitektur Monolitik) — ditulis oleh [Nama Teman 3]
+## Pitfall 3: Single Point of Failure (Arsitektur Monolitik) — ditulis oleh Samuel Nelson Wabiser
 
 **Bukti di skenario:** Satu server menangani semua modul (pesanan, pembayaran, notifikasi kurir) dalam satu proses monolitik, yang membuatnya kewalahan saat trafik naik.
 
