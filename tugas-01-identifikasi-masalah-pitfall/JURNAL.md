@@ -3,17 +3,17 @@
 > Isi jurnal ini selama proses diskusi berlangsung, bukan ditulis ulang rapi di akhir. Tulis dengan gaya bebas — poin diskusi, kebuntuan, perubahan pikiran.
 
 ## 22 September 2026
-- **Peserta:** Naufal Fudhail, Diandra Naditya Mulkis, Samuel Nelson Wabiser
+- **Peserta:** Naufal Fudhail, Diandra Nanditya Mulkis, Samuel Nelson Wabiser
 - **Poin diskusi:** 
-  - Membedah masalah FoodGo dari studi kasus.
-  - Sepakat mengambil 3 pitfall utama: *network reliability*, tidak ada *timeout* (*latency is zero*), dan kelemahan arsitektur monolitik (*single point of failure*).
-  - Membagi tugas penulisan masing-masing pitfall ke tiap anggota.
-- **Perbedaan pendapat (jika ada):** Awalnya sempat bingung membedakan antara masalah *latency is zero* dan *network is reliable*. Akhirnya disepakati kalau *network reliable* fokus ke perlunya *retry*, sedangkan *latency is zero* fokus ke pentingnya *timeout*.
+  - Ngumpul bahas kasus FoodGo. Kelihatan banget ada masalah di komen `# network is always reliable, no need for retry`. Ini fix jadi poin pertama buat dikerjain Naufal.
+  - Diandra nemuin masalah di modul pesanan yang nungguin pembayaran tanpa batas waktu. Kita sepakat ini masuk *fallacy "latency is zero"*.
+  - Bahas soal server yang *crash* pas jam makan siang. Ini jelas gara-gara semua modul dijalanin di satu proses yang sama (monolitik), jadi pas satu berat, semua ikut mati.
+  - Pembagian tugas untuk di README: Naufal (Pitfall 1), Diandra (Pitfall 2), Samuel (Pitfall 3 & Kesimpulan).
+- **Kebuntuan/Perubahan pikiran:** Tadi sempet debat sedikit buat bedain fungsi *retry* sama *timeout* karena mirip-mirip. Setelah diskusi ulang baca referensi, akhirnya sepakat kalau *retry* itu buat ngakalin *request* yang gagal/putus di jalan, sedangkan *timeout* itu buat mutusin koneksi kalau *service* lain kelamaan ngerespons biar server nggak *hang*.
 
 ## Review Silang
-- Diandra mengomentari analisis Naufal: Penjelasan *cascading failure* di bagian *trade-off* sudah sangat jelas dan relevan dengan kasus FoodGo.
-- Naufal mengomentari analisis Nelson: Usulan solusi migrasi ke *microservices* mungkin perlu diberi catatan bahwa praktiknya butuh waktu dan *effort* besar untuk tim kecil.
-
+- Diandra ngecek bagian Naufal: Penjelasan soal *cascading failure* masuk akal, gara-gara *retry* serentak servernya malah bisa down.
+- Naufal ngecek bagian Samuel: Tambahin info soal ribetnya ngurus *microservices*, soalnya tim kecil pasti kewalahan ngurus banyak *container*.
 ## Log Penggunaan AI (Level 2)
 
 > Wajib diisi sesuai kebijakan Level 2 di `../RUBRIK-UMUM.md`. Tulis "Tidak memakai AI" pada baris pertama jika memang tidak dipakai. Hanya untuk brainstorming ide/outline — bukan untuk kode/analisis/teks akhir.
