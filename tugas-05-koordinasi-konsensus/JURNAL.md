@@ -12,7 +12,10 @@ Skenario 1: Start normal
 ## Skenario 2: Leader dimatikan
 - **Leader baru yang terpilih:** Node 4 (port 5004)
 - **Berapa lama waktu sampai leader baru terdeteksi:** Sekitar 3 detik setelah Node 5 dihentikan dengan `Ctrl+C`, mengikuti interval `time.sleep(3)` di `monitor_leader`. Setelah `PING` ke Node 5 gagal, node lain memicu election. Node 4 langsung menjadi leader karena satu-satunya peer di atasnya (Node 5) tidak bisa dihubungi, sehingga tidak ada waktu tunggu `OK`. Lalu Node 4 mengirim `COORDINATOR`, dan Node 1 sampai 3 menampilkan "Leader sekarang: Node 4". Pesan `COORDINATOR` dari Node 4 bisa muncul beberapa kali karena beberapa node mendeteksi kematian leader bersamaan.
+- 
 Log Penggunaan AI (Level 2)
+
+
 | Tanggal | Tool AI | Prompt yang diberikan | Ringkasan saran/ide AI | Bagaimana diolah jadi tulisan/kode sendiri |
 |---|---|---|---|---|
 | 20/10/2026 | Claude | "berikan rancangan logika event-driven untuk sinkronisasi balasan OK pada Bully Algorithm di Python" | AI menyarankan `threading.Event` yang di-`set()` oleh handler `OK` dan ditunggu `start_election()` dengan `wait(timeout)`, plus nomor ronde untuk mengabaikan `OK` basi dan lock agar tidak ada election ganda | Konsep Event dan pencegahan election ganda dipakai. Nomor ronde tidak dipakai karena kerangka `node.py` tidak membawa nomor ronde di pesan |
